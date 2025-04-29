@@ -383,15 +383,26 @@ function findLargestTransaction(transactions, userId, params) {
 
 // --- API Endpoint ---
 
-app.get("/hello", (req, res) => {
-  try {
-    return res.json({ message: "Hello from the Anthos Chatbot Microservice!" });
-  } catch (error) {
-    return res.status(500).json({
-      error: "An internal error occurred while processing your request.",
-    });
-  }
-});
+app.get("/hello", async (req, res) => {
+    try {
+      // Add request logging
+      console.log(`Received hello request from ${req.ip}`);
+        
+      return res.json({ 
+        message: "Hello from the Anthos Chatbot Microservice!",
+     
+      });
+  
+    } catch (error) {
+      // Log the error with details
+      console.error("Error in /hello endpoint:", error);
+  
+      return res.status(500).json({
+        error: "An internal error occurred while processing your request.",
+        timestamp: new Date().toISOString(),
+      });
+    }
+  });
 
 // This endpoint receives user questions and interacts with the AI and database.
 app.post("/chat", async (req, res) => {
