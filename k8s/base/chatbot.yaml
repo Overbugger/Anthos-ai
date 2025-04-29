@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    application: bank-of-anthos
+    environment: development
+    team: chatbot
+    tier: backend
+  name: chatbot
+  namespace: group4-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chatbot
+      application: bank-of-anthos
+      environment: development
+      team: chatbot
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: chatbot
+        application: bank-of-anthos
+        environment: development
+        team: chatbot
+        tier: backend
+    spec:
+      containers:
+        - name: chatbot
+          image: us-central1-docker.pkg.dev/dreamdev-team4/group4-repo/chatbot:placeholder
+          ports:
+            - containerPort: 8008
+      serviceAccountName: default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    application: bank-of-anthos
+    environment: development
+    team: chatbot
+    tier: backend
+  name: chatbot
+  namespace: group4-ns
+spec:
+  ports:
+    - port: 8008
+  selector:
+    app: chatbot
+    application: bank-of-anthos
+    environment: development
+    team: chatbot
+    tier: backend
+  type: LoadBalancer

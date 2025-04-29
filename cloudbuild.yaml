@@ -1,0 +1,52 @@
+# Cloud Build configuration for the Node.js Chatbot application.
+
+steps:
+
+  # Docker build and push the chatbot image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      # Define the full image name including the repository and tag
+      # Assumes you are pushing to a repository named 'group4-repo' in Artifact Registry or Container Registry
+      - 'us-central1-docker.pkg.dev/${PROJECT_ID}/group4-repo/chatbot:${SHORT_SHA}'
+      - '.' # Build from the current directory
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      # Push the image to the specified repository
+      - 'us-central1-docker.pkg.dev/${PROJECT_ID}/group4-repo/chatbot:${SHORT_SHA}'
+
+  # Kubernetes setup - Apply the service configuration
+  # Assumes your Kubernetes service YAML file for the chatbot is located at k8s/base/chatbot-service.yaml
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['apply', '-f', 'k8s/base/chatbot-service.yaml']
+    env:
+      # Ensure these match your GKE cluster configuration
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=group4-cluster'
+
+  # Update deployment with the new image
+  # Assumes your Kubernetes deployment name for the chatbot is 'chatbot-deployment'
+  # and it's in the 'group4-ns' namespace.
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'set'
+      - 'image'
+      - 'deployment/chatbot-deployment' # Name of your chatbot deployment
+      # Set the image for the 'chatbot-deployment' to the newly built Docker image
+      - 'chatbot-container=us-central1-docker.pkg.dev/${PROJECT_ID}/group4-repo/chatbot:${SHORT_SHA}' # Assuming your container name in the deployment is 'chatbot-container'
+      - '--namespace=group4-ns' # Namespace where your deployment is located
+    env:
+      # Ensure these match your GKE cluster configuration
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=group4-cluster'
+
+# Specify the images built by this Cloud Build run
+images:
+  - 'us-central1-docker.pkg.dev/${PROJECT_ID}/group4-repo/chatbot:${SHORT_SHA}'
+
+# Configure logging for the build
+options:
+  logging: CLOUD_LOGGING_ONLY
