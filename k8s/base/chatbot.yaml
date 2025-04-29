@@ -26,38 +26,11 @@ spec:
         team: chatbot
         tier: backend
     spec:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
       containers:
         - name: chatbot
           image: us-central1-docker.pkg.dev/dreamdev-team4/group4-repo/chatbot:placeholder
           ports:
             - containerPort: 8008
-          resources:
-            requests:
-              memory: "256Mi"
-              cpu: "100m"
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
-          livenessProbe:
-            httpGet:
-              path: /hello
-              port: 8008
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /hello
-              port: 8008
-            initialDelaySeconds: 5
-            periodSeconds: 5
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
       serviceAccountName: default
 ---
 apiVersion: v1
@@ -72,9 +45,7 @@ metadata:
   namespace: group4-ns
 spec:
   ports:
-  - name: http
-    port: 81
-    targetPort: 8088
+    - port: 8008
   selector:
     app: chatbot
     application: bank-of-anthos

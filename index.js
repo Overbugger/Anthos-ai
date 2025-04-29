@@ -20,7 +20,7 @@ const dbController = require("./controller"); // Assuming controller.js is in th
 
 const app = express();
 
-// --- CORS Configuration ---
+// --- CORS Confguration ---
 // Use the cors middleware to allow requests from all origins.
 // WARNING: For production, configure this to allow requests ONLY from
 // your frontend's domain(s) for robust security.
