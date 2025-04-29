@@ -634,7 +634,7 @@ app.post("/chat", async (req, res) => {
 });
 
 // --- Server Startup ---
-const port = process.env.PORT || 3000;
+const port = 8008;
 const server = app.listen(port, async () => {
   console.log(`Bank Chatbot Microservice listening on port ${port}`);
 
