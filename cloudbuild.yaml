@@ -34,7 +34,7 @@ steps:
     args:
       - 'set'
       - 'image'
-      - 'deployment/chatbot-deployment' # Name of your chatbot deployment
+      - 'deployment/chatbot' # Name of your chatbot deployment
       # Set the image for the 'chatbot-deployment' to the newly built Docker image
       - 'chatbot-container=us-central1-docker.pkg.dev/${PROJECT_ID}/group4-repo/chatbot:${SHORT_SHA}' # Assuming your container name in the deployment is 'chatbot-container'
       - '--namespace=group4-ns' # Namespace where your deployment is located
