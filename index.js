@@ -30,10 +30,10 @@ app.use(cors());
 app.use(express.json());
 
 // --- Configuration ---
-const projectId = process.env.GCP_PROJECT_ID;
-const location = process.env.GCP_LOCATION || "us-central1"; // e.g., 'us-central1'
+const projectId = "dreamdev-team4";
+const location = "us-central1"; // e.g., 'us-central1'
 // Use the model you confirmed is available in your location
-const model = process.env.VERTEX_AI_MODEL || "gemini-1.5-flash-002"; // Default to a commonly available model
+const model = "gemini-1.5-flash-002"; // Default to a commonly available model
 
 // Ensure project ID and location are set
 if (!projectId || !location) {
