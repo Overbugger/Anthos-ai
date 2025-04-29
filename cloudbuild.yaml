@@ -19,9 +19,9 @@ steps:
       - 'us-central1-docker.pkg.dev/${PROJECT_ID}/group4-repo/chatbot:${SHORT_SHA}'
 
   # Kubernetes setup - Apply the service configuration
-  # Assumes your Kubernetes service YAML file for the chatbot is located at k8s/base/chatbot-service.yaml
+  # Assumes your Kubernetes service YAML file for the chatbot is located at k8s/base/chatbot.yaml
   - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['apply', '-f', 'k8s/base/chatbot-service.yaml']
+    args: ['apply', '-f', 'k8s/base/chatbot.yaml']
     env:
       # Ensure these match your GKE cluster configuration
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
