@@ -382,6 +382,17 @@ function findLargestTransaction(transactions, userId, params) {
 }
 
 // --- API Endpoint ---
+
+app.get("/hello", (req, res) => {
+  try {
+    return res.json({ message: "Hello from the Anthos Chatbot Microservice!" });
+  } catch (error) {
+    return res.status(500).json({
+      error: "An internal error occurred while processing your request.",
+    });
+  }
+});
+
 // This endpoint receives user questions and interacts with the AI and database.
 app.post("/chat", async (req, res) => {
   const { userId, question } = req.body; // userId should come from authentication
